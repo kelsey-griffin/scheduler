@@ -13,6 +13,11 @@ import InterviewerList from "components/InterviewerList.js";
 import Appointment from "components/Appointment/";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
+
 
 
 /////
@@ -141,3 +146,30 @@ storiesOf("InterviewerList", module)
     .add("With Time", () => <Appointment time='12pm'/>)
     .add("Header", () => <Header time="1pm"/>)
     .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
+    .add("Show", () => (
+      <Show 
+        student="Lydia Miller-Jones"
+        interviewer={interviewer}
+        onEdit={action("onEdit")}
+        onDelete={action("onDelete")}
+        />))
+    .add("Confirm", () => (
+      <Confirm
+        message="Delete the appointment?"
+        onConfirm={action("onConfirm")}
+        onCancel={action("onCancel")}
+      />))
+      .add("Status- Saving", () => <Status message="saving..." />)
+      .add("Status- Deleting", () => <Status message="deleting..." />)
+      .add("Error- saving", () => (
+        <Error 
+          message="could not save appointment" 
+          onClose={action("onCLose")}
+        />
+      ))  
+      .add("Error- deleting", () => (
+        <Error 
+          message="could not delete appointment" 
+          onClose={action("onCLose")}
+        />
+      ))  
