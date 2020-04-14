@@ -10,6 +10,10 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem.js";
 import InterviewerList from "components/InterviewerList.js";
+import Appointment from "components/Appointment/";
+import Header from "components/Appointment/Header";
+import Empty from "components/Appointment/Empty";
+
 
 /////
 storiesOf("Button", module)
@@ -127,3 +131,13 @@ storiesOf("InterviewerList", module)
       onChange={action("onChange")}
     />
   ));
+
+  ////////
+  storiesOf("Appointment", module)
+    .addParameters({
+      backgrounds: [{ name: "white", value: "#fff", default: true }]
+    })
+    .add("Appointment", () => <Appointment />)
+    .add("With Time", () => <Appointment time='12pm'/>)
+    .add("Header", () => <Header time="1pm"/>)
+    .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
