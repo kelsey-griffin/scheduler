@@ -33,7 +33,7 @@ export default function Application(props) {
             .catch(error => error))
       ])
       .then(all => {
-        setState(prev => ({ days: all[0], appointments: all[1]}));
+        setState(prev => ({ ...prev, days: all[0], appointments: all[1]}));
         // console.log(all)
       })      
   }, [])
