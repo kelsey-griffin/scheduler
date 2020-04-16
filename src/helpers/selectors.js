@@ -1,5 +1,5 @@
 //returns an array of appointments when given a day
-export default function getAppointmentsForDay(state, day) {
+export const getAppointmentsForDay = (state, day) => {
   const apptForDay = [];
   const dayObj = state.days.filter(i => i.name === day);
   if (dayObj.length) {
@@ -8,4 +8,14 @@ export default function getAppointmentsForDay(state, day) {
     })
   }
   return apptForDay;
+}
+
+export const getInterview = (state, interview) => {
+  //reformat the interview data, if any, to show interviewer details
+  if (interview) {
+    const fullInterviewer = state.interviewers[interview.interviewer];
+    const newInterview = {...interview, interviewer: fullInterviewer};
+    return newInterview;
+  }
+  return null;
 }
