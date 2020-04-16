@@ -19,3 +19,14 @@ export const getInterview = (state, interview) => {
   }
   return null;
 }
+
+export const getInterviewersForDay = (state, day) => {
+  const interviewersForDay = [];
+  const dayObj = state.days.filter(i => i.name === day);
+  if (dayObj.length) {
+    dayObj[0].interviewers.forEach(elem => {
+      interviewersForDay.push(state.interviewers[elem.toString()]);
+    })
+  }
+  return interviewersForDay;
+}
