@@ -27,7 +27,16 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({...state, appointments})
+
+    return axios({
+      method: 'PUT',
+      url: `/api/appointments/${id}`,
+      data: appointment
+    })
+    .then(result => {
+      setState({...state, appointments})
+      console.log(result)
+    });
   }
 
   const setDay = day => setState({ ...state, day });
