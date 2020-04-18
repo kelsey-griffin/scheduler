@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function useApplicationData(/*???*/) {
+export default function useApplicationData() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -9,56 +9,50 @@ export default function useApplicationData(/*???*/) {
     interviewers: {},
     spots: 5
   });
-  
-  console.log("days: ", state.days)
-  
-  function countSpots() {
-    const copy = {...state};
-    console.log("copy --> ", copy)
+    
+  function getDay() {
+    //returns object for selected day (name, appointments, inteviews, spots)
+    const thisDay = state.days && state.days.filter(day => day.name === state.day);
+    return thisDay[0];
+  }
 
-    const specificDay = copy.days.filter(day => day.name === copy.day)
-    console.log("spec day: ", specificDay)
-
-    const dayID = specificDay[0] && specificDay[0].id
-    console.log("day id ", dayID)
-
-    if (copy.appointments && specificDay[0]) { 
-      console.log("specific day: ", specificDay[0].appointments)
-      
+  function countSpots(newAppointments, specificDay) {
+    //returns number of spots remaining for selected day
+    if (newAppointments && specificDay) { 
       let counter = 0;
-      specificDay[0].appointments.forEach(elem => {
-        console.log("elem --> ", copy.appointments[elem].interview)
-        if (copy.appointments[elem].interview === null) counter ++;
+      specificDay.appointments.forEach(elem => {
+        if (newAppointments[elem].interview === null) counter ++;
       })
-      console.log(counter);
-      const target = state.days[dayID - 1]
-      const days = {
-        ...state.days, [dayID - 1]: {...target, spots: counter}
-      }
-      setState({...state, days})
+      return counter;
     }
   }
-  countSpots();
-  // const setSpots = spots => setState({ ...state, spots });
-  // setSpots(countSpots());
 
+  //update appointments locally, then update api, and state
   function cancelInterview(id) {
-    const target = state.appointments[id]
+    const target = state.appointments[id];
     const appointments = {
       ...state.appointments,
       [id]: {...target, interview: null }
     };
+    const currDay = getDay();
+    currDay.spots = countSpots(appointments, currDay);
+
+    const newDays = {
+      ...state.days, 
+      ...currDay.spots
+    }
+
     return axios({
       method: 'DELETE',
       url: `api/appointments/${id}`
     })
-    .then(result => {
-      setState({...state, appointments})
+    .then(() => {
+      setState(prev => ({...prev, appointments, newDays}))
     });
   }
 
+  //update appointments locally, then update api, and state
   function bookInterview(id, interview) {
-    console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -67,14 +61,20 @@ export default function useApplicationData(/*???*/) {
       ...state.appointments,
       [id]: appointment
     };
+    const currDay = getDay();
+    currDay.spots = countSpots(appointments, currDay)
 
+    const newDays = {
+      ...state.days, 
+      ...currDay.spots
+    }
     return axios({
       method: 'PUT',
       url: `/api/appointments/${id}`,
       data: appointment
     })
-    .then(result => {
-      setState({...state, appointments})
+    .then(() => {
+      setState(prev => ({...prev, appointments, newDays}))
     });
   }
 
@@ -94,7 +94,7 @@ export default function useApplicationData(/*???*/) {
           .then(res => res.data)
           .catch(error => error)),
       Promise.resolve(
-        //get appointments data from api
+        //get interviewer data from api
         axios.get('/api/interviewers')
           .then(res => res.data)
           .catch(error => error))
