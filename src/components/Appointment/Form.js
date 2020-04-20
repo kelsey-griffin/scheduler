@@ -31,6 +31,7 @@ export default function Form(props) {
             placeholder="Enter Student Name"
             value={name}
             onChange={handleNameInput}
+            data-testid="student-name-input"
           />
         </form>
         <InterviewerList 
@@ -43,7 +44,7 @@ export default function Form(props) {
         <section className="appointment__actions">
           <Button onClick={cancel} danger>Cancel</Button>
           <Button onClick={() => {
-            if (name && interviewer) props.onSave(name, interviewer)
+            props.onSave(name, interviewer)
             }} confirm>Save</Button>
         </section>
       </section>
