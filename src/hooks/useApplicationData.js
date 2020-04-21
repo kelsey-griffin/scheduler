@@ -42,10 +42,7 @@ export default function useApplicationData() {
       ...currDay.spots
     }
 
-    return axios({
-      method: 'DELETE',
-      url: `api/appointments/${id}`
-    })
+    return axios.delete(`api/appointments/${id}`)
     .then(() => {
       setState(prev => ({...prev, appointments, newDays}))
     });
