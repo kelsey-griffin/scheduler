@@ -68,11 +68,9 @@ export default function useApplicationData() {
       ...state.days, 
       ...currDay.spots
     }
-    return axios({
-      method: 'PUT',
-      url: `/api/appointments/${id}`,
-      data: appointment
-    })
+    return axios.put(`/api/appointments/${id}`,
+      {data: appointment}
+    )
     .then(() => {
       setState(prev => ({...prev, appointments, newDays}))
     });
@@ -83,25 +81,22 @@ export default function useApplicationData() {
   useEffect(() => {
     //get days data from api
     Promise.all(
-      [Promise.resolve(
+      [
         //get days data from api
         axios.get('/api/days')
-          .then(res => res.data)
-          .catch(error => error)),
-      Promise.resolve(
+          .then(res => res.data),
+      
         //get appointments data from api
         axios.get('/api/appointments')
-          .then(res => res.data)
-          .catch(error => error)),
-      Promise.resolve(
+          .then(res => res.data),
+      
         //get interviewer data from api
         axios.get('/api/interviewers')
           .then(res => res.data)
-          .catch(error => error))
       ])
       .then(all => {
         setState(prev => ({ ...prev, days: all[0], appointments: all[1], interviewers: all[2]}));
-      })      
+      }).catch(error => console.error(error))      
   }, [])
 
   return {
