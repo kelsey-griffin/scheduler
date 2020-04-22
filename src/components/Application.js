@@ -15,98 +15,27 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
-  //
-  // const [state, setState] = useState({
-  //   day: "Monday",
-  //   days: [],
-  //   appointments: {},
-  //   interviewers: {}
-  // });
-
-  // function cancelInterview(id) {
-  //   const target = state.appointments[id]
-  //   const appointments = {
-  //     ...state.appointments,
-  //     [id]: {...target, interview: null }
-  //   };
-  //   return axios({
-  //     method: 'DELETE',
-  //     url: `api/appointments/${id}`
-  //   })
-  //   .then(result => {
-  //     setState({...state, appointments})
-  //     console.log(result)
-  //   });
-  // }
-
-  // function bookInterview(id, interview) {
-  //   console.log(id, interview);
-  //   const appointment = {
-  //     ...state.appointments[id],
-  //     interview: { ...interview }
-  //   };
-  //   const appointments = {
-  //     ...state.appointments,
-  //     [id]: appointment
-  //   };
-
-  //   return axios({
-  //     method: 'PUT',
-  //     url: `/api/appointments/${id}`,
-  //     data: appointment
-  //   })
-  //   .then(result => {
-  //     setState({...state, appointments})
-  //     console.log(result)
-  //   });
-  // }
-  // const setDay = day => setState({ ...state, day });
-  //
-const appointments = getAppointmentsForDay(state, state.day);
+  const appointments = getAppointmentsForDay(state, state.day);
+  console.log("appointments", appointments)
   const interviewers = getInterviewersForDay(state, state.day);
-
   const listOfAppointments = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-  
+
     return (
       <Appointment
-        key={appointment.id}
-        id={appointment.id}
+      key={appointment.id}
+      id={appointment.id}
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-      />
+        />
     );
   });
-
-  //
-  // useEffect(() => {
-  //   //get days data from api
-  //   Promise.all(
-  //     [Promise.resolve(
-  //       //get days data from api
-  //       axios.get('/api/days')
-  //         .then(res => res.data)
-  //         .catch(error => error)),
-  //       Promise.resolve(
-  //         //get appointments data from api
-  //         axios.get('/api/appointments')
-  //           .then(res => res.data)
-  //           .catch(error => error)),
-  //       Promise.resolve(
-  //         //get appointments data from api
-  //         axios.get('/api/interviewers')
-  //           .then(res => res.data)
-  //           .catch(error => error))
-  //     ])
-  //     .then(all => {
-  //       setState(prev => ({ ...prev, days: all[0], appointments: all[1], interviewers: all[2]}));
-  //     })      
-  // }, [])
-//
-
+  
+  console.log(listOfAppointments)
+  
   return (
     <main className="layout">
       <section className="sidebar">
@@ -130,7 +59,10 @@ const appointments = getAppointmentsForDay(state, state.day);
         />
       </section>
       <section className="schedule">
-        <ul>{listOfAppointments}</ul>
+        <ul>
+          {listOfAppointments}
+           <Appointment id="last" time="5pm" />
+        </ul>
       </section>
     </main>
   );
