@@ -23,7 +23,7 @@ describe("Appointments", () => {
   });
 
   it("should edit an interview", () => {
-    cy.get("[alt=Edit]").click({ force: true })
+    cy.get("[alt=Edit]").first().click({ force: true });
     
     cy.get("[data-testid=student-name-input]").clear().type("Lydia Miller-Jones");
     cy.get('[alt="Tori Malcolm"]').click();
@@ -32,5 +32,17 @@ describe("Appointments", () => {
  
     cy.contains(".appointment__card--show", "Lydia Miller-Jones");
     cy.contains(".appointment__card--show", "Tori Malcolm");
+  });
+
+  it("should cancel an appointment", () => {
+    cy.get("[alt=Delete]").first().click({ force: true });
+    
+    cy.contains("Confirm").click();
+    
+    cy.contains(".appointment__card--status", "Deleting...").should("exist");
+    cy.contains(".appointment__card--status", "Deleting...").should("not.exist");
+
+    cy.contains(".appointment__card--show", "Archie Cohen");
+    .should("not.exist");
   })
  });
