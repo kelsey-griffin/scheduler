@@ -60,13 +60,13 @@ export default function useApplicationData() {
     };
     const currDay = getDay();
     currDay.spots = countSpots(appointments, currDay)
-
     const newDays = {
       ...state.days, 
       ...currDay.spots
     }
+    console.log("appointment to post", appointment)
     return axios.put(`/api/appointments/${id}`,
-      {data: appointment}
+      appointment
     )
     .then(() => {
       setState(prev => ({...prev, appointments, newDays}))
