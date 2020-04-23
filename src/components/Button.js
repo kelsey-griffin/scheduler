@@ -6,10 +6,10 @@ import classNames from "classnames";
 export default function Button(props) {
    
    let buttonClass = classNames(
-                        "button", 
-                        {"button--danger": props.danger}, 
-                        {"button--confirm": props.confirm}
-                     );
+      "button", 
+      {"button--danger": props.danger}, 
+      {"button--confirm": props.confirm}
+   );
 
    return(
       <button 
@@ -19,4 +19,4 @@ export default function Button(props) {
          {props.children}
       </button>
    );
-}
+};

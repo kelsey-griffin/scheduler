@@ -16,26 +16,24 @@ export default function Application(props) {
   } = useApplicationData();
 
   const appointments = getAppointmentsForDay(state, state.day);
-  console.log("appointments", appointments)
   const interviewers = getInterviewersForDay(state, state.day);
+  
   const listOfAppointments = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
     return (
       <Appointment
-      key={appointment.id}
-      id={appointment.id}
+        key={appointment.id}
+        id={appointment.id}
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-        />
+      />
     );
   });
-  
-  console.log(listOfAppointments)
-  
+    
   return (
     <main className="layout">
       <section className="sidebar">

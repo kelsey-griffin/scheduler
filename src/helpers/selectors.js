@@ -8,7 +8,7 @@ export const getAppointmentsForDay = (state, day) => {
     })
   }
   return apptForDay;
-}
+};
 
 export const getInterview = (state, interview) => {
   //reformat the interview data, if any, to show interviewer details
@@ -18,7 +18,7 @@ export const getInterview = (state, interview) => {
     return newInterview;
   }
   return null;
-}
+};
 
 export const getInterviewersForDay = (state, day) => {
   const interviewersForDay = [];
@@ -29,4 +29,4 @@ export const getInterviewersForDay = (state, day) => {
     })
   }
   return interviewersForDay;
-}
+};
