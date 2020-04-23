@@ -8,13 +8,14 @@ Built in React with extensive unit, integration, and end-to-end testing using Je
 - User is presented with a confirmation form before completing destructive operations
 - Data is persisted though the app using a PostgreSQL API. 
 
+* Edit Visual Mode:
 !["Screenshot of edit mode"](https://github.com/kelsey-griffin/scheduler/blob/master/docs/edit-appointment.png)
 
-!["Screenshot of saving mode"](https://github.com/kelsey-griffin/scheduler/docs/async-saving-message.png)
+* Saving Visual Mode:
+!["Screenshot of saving mode"](https://github.com/kelsey-griffin/scheduler/blob/master/docs/async-saving-message.png)
 
+* Confirmation Visual Mode:
 !["Screenshot of delete confirmation"](https://github.com/kelsey-griffin/scheduler/blob/master/docs/confirmation-message.png)
-
-
 
 
 ## Technical Specifications
