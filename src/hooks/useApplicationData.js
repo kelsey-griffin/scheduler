@@ -1,14 +1,36 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import axios from 'axios';
 
+//Reducer for state in app
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case SET_DAY:
+      return { ...state, day: action.value }
+    case SET_APPLICATION_DATA:
+      return {...state, ...action.value}
+    case SET_INTERVIEW: {
+      return {...state, ...action.value}
+    }
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      );
+  }
+}
+
 export default function useApplicationData() {
-  const [state, setState] = useState({
+  const initialState = {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {},
-    spots: 5
-  });
+    interviewers: {}
+  }
+  const [state, dispatch] = useReducer(reducer, initialState);
     
   function getDay() {
     //returns object for selected day (name, appointments, inteviews, spots)
@@ -44,7 +66,7 @@ export default function useApplicationData() {
 
     return axios.delete(`api/appointments/${id}`)
     .then(() => {
-      setState(prev => ({...prev, appointments, newDays}))
+      dispatch({type: SET_APPLICATION_DATA, value: {appointments, newDays} })
     });
   }
 
@@ -64,35 +86,26 @@ export default function useApplicationData() {
       ...state.days, 
       ...currDay.spots
     }
-    console.log("appointment to post", appointment)
-    return axios.put(`/api/appointments/${id}`,
-      appointment
-    )
+
+    return axios.put(`/api/appointments/${id}`, appointment)
     .then(() => {
-      setState(prev => ({...prev, appointments, newDays}))
+      dispatch({type: SET_APPLICATION_DATA, value: { appointments, newDays } })
     });
   }
 
-  const setDay = day => setState({ ...state, day });
+  const setDay = day => dispatch({type: SET_DAY, value: day})
+  // const setDay = day => setState({ ...state, day });
   
   useEffect(() => {
-    //get days data from api
     Promise.all(
-      [
-        //get days data from api
-        axios.get('/api/days')
-          .then(res => res.data),
-      
-        //get appointments data from api
-        axios.get('/api/appointments')
-          .then(res => res.data),
-      
-        //get interviewer data from api
+      [//get days, appointment and interviewer data from api
+        axios.get('/api/days'),
+        axios.get('/api/appointments'),
         axios.get('/api/interviewers')
-          .then(res => res.data)
       ])
       .then(all => {
-        setState(prev => ({ ...prev, days: all[0], appointments: all[1], interviewers: all[2]}));
+        const results = all.map(result => result.data)
+        dispatch({type: SET_INTERVIEW, value: {days: results[0], appointments: results[1], interviewers: results[2]} })
       }).catch(error => console.error(error))      
   }, [])
 
