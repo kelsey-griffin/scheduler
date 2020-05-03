@@ -24,6 +24,17 @@ Built in React with extensive unit, integration, and end-to-end testing using Je
 - Axios
 - Storybook, Webpack Dev Server, Jest, Testing Library
 
+### Dependencies
+- Axios
+- Classnames
+- Normalize.css
+- React
+- React-dom
+- React Hooks Testing Library
+- React Scripts
+- React Test Renderer
+- @testing-library/react-hooks
+
 ## Setup
 
 Install dependencies with `npm install`.
