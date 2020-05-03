@@ -1,4 +1,3 @@
-// import { useState, useEffect } from "react";
 import { useEffect, useReducer } from "react";
 import axios from 'axios';
 
@@ -94,7 +93,6 @@ export default function useApplicationData() {
   }
 
   const setDay = day => dispatch({type: SET_DAY, value: day})
-  // const setDay = day => setState({ ...state, day });
   
   useEffect(() => {
     Promise.all(

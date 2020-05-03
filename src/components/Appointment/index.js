@@ -95,7 +95,6 @@ export default function Appointment(props) {
         {mode === ERROR_SAVE && (
           <Error
             message="Error: Save Aborted."
-            // onClose={() => transition(CREATE, true)}
             onClose={() => back(CREATE)}
           />  
         )}

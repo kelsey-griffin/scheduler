@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, cleanup, fireEvent, getByAltText } from "@testing-library/react";
 
 import Form from "components/Appointment/Form";
 
@@ -11,14 +11,9 @@ describe("Form", () => {
     {
       id: 1,
       name: "Sylvia Palmer",
-      avatar: "https://i.imgur.com/LpaY82x.png"
+      avatar: "https://i.imgur.com/LpaY82x.png",
     }
   ];
-  
-  // covered by Application.test.js
-  // it("renders without crashing", () => {
-  //   render(<Form interviewers={interviewers}/>);
-  // });
 
   it("renders without student name if not provided", () => {
     const { getByPlaceholderText } = render(
@@ -44,7 +39,7 @@ describe("Form", () => {
     );
     /* 3. Click the save button */
     fireEvent.click(getByText("Save"));
-    expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
+    expect(getByText(/you must select an interviewer and enter a student name/i)).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   });
   
@@ -53,10 +48,10 @@ describe("Form", () => {
     const { getByText, getByPlaceholderText, queryByText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
-  
+
     fireEvent.click(getByText("Save"));
   
-    expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
+    expect(getByText(/you must select an interviewer and enter a student name/i)).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
@@ -65,7 +60,7 @@ describe("Form", () => {
   
     fireEvent.click(getByText("Save"));
   
-    expect(queryByText(/student name cannot be blank/i)).toBeNull();
+    expect(queryByText(/you must select an interviewer and enter a student name/i)).toBeNull();
   
     expect(onSave).toHaveBeenCalledTimes(1);
     expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
@@ -90,7 +85,7 @@ describe("Form", () => {
   
     fireEvent.click(getByText("Cancel"));
   
-    expect(queryByText(/student name cannot be blank/i)).toBeNull();
+    expect(queryByText(/you must select an interviewer and enter a student name/i)).toBeNull();
   
     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
   
